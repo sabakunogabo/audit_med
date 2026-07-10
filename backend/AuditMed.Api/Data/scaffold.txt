@@ -1,0 +1,11 @@
+dotnet ef dbcontext scaffold \
+"Server=localhost;Database=AuditMed;User Id=sa;Password=AuditMed_2026!;TrustServerCertificate=True;" \
+Microsoft.EntityFrameworkCore.SqlServer \
+--no-pluralize \
+--no-onconfiguring \
+--use-database-names \
+--output-dir Data/Entities \
+--context-dir Data/Context \
+--context AuditMedDBContext \
+--data-annotations \
+--force

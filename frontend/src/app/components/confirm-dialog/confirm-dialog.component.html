@@ -1,0 +1,7 @@
+
+<h2 mat-dialog-title>{{ data.titulo }}</h2>
+<mat-dialog-content>{{ data.mensaje }}</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">No</button>
+  <button mat-raised-button color="warn" (click)="confirmar()">Sí, eliminar</button>
+</mat-dialog-actions>
