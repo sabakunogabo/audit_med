@@ -1,0 +1,20 @@
+
+<mat-toolbar color="primary">
+  <mat-icon class="toolbar-icon">local_hospital</mat-icon>
+  <span>AuditMed - Módulo de Auditoría</span>
+</mat-toolbar>
+
+<main class="main-container">
+  <app-atencion-form 
+    [atencionParaEditar]="atencionSeleccionada" 
+    (guardarEvent)="onGuardar($event)" 
+    (cancelarEvent)="onCancelarEdicion()">
+  </app-atencion-form>
+
+  <app-atencion-table 
+    [atenciones]="atenciones" 
+    [cargando]="cargando()"
+    (editarEvent)="onEditar($event)" 
+    (eliminarEvent)="onEliminar($event)">
+  </app-atencion-table>
+</main>
