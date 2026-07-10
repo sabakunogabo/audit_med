@@ -465,5 +465,7 @@ docker-data/
 
 # Others
 *.cache
+.obsidian
+
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,node,angular,aspnetcore

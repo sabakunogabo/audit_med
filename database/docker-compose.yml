@@ -1,0 +1,54 @@
+# =============================================================================
+# AUDITMED - Base de Datos en Desarrollo
+# =============================================================================
+# Uso:
+#   1. Copiar .env.example a .env y configurar contraseña
+#   2. Ejecutar: docker compose up -d
+#   3. Esperar a que los scripts terminen (ver logs: docker compose logs -f)
+# =============================================================================
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: auditmed-db-dev
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: ${DB_SA_PASSWORD:-AuditMed_2026!}
+      MSSQL_PID: Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$${SA_PASSWORD}\" -C -Q \"SELECT 1\" || exit 1"
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  flyway:
+    image: flyway/flyway:latest-alpine
+
+    user: root
+
+    volumes:
+      - ./scripts:/flyway/sql:Z
+
+    environment:
+      FLYWAY_URL: jdbc:sqlserver://sqlserver:1433;databaseName=master;encrypt=false;trustServerCertificate=true
+      FLYWAY_USER: sa
+      FLYWAY_CLEAN_DISABLED: "false"
+      FLYWAY_PASSWORD: ${DB_SA_PASSWORD}
+      FLYWAY_LOCATIONS: filesystem:/flyway/sql/migrations
+
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+    command: migrate
+
+volumes:
+  sqlserver_data:
