@@ -8,7 +8,7 @@ GO
 
 -- REGISTROS DE ATENCIÓN (PARA LA API)
 -- Usando DATEADD para que las fechas sean relativas a HOY (siempre válido para prueba de >30 días)
-INSERT INTO dbo.RegistroAtenciones (DocumentoPaciente, CodigoDiagnostico, FechaAtencion, RequiereAuditoria) VALUES
+INSERT INTO dbo.RegistroAtencion (DocumentoPaciente, CodigoDiagnostico, FechaAtencion, RequiereAuditoria) VALUES
     ('12345678', 'J01.1', DATEADD(DAY, -45, GETDATE()), 0),
     ('23456789', 'K21.0', DATEADD(DAY, -35, GETDATE()), 0),
     ('45678901', 'M54.5', DATEADD(DAY, -60, GETDATE()), 0),

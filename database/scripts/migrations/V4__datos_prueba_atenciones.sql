@@ -13,7 +13,7 @@ DECLARE @Pacientes TABLE
 
 INSERT INTO @Pacientes (Documento, IdPaciente)
 SELECT Documento, IdPaciente
-FROM dbo.Pacientes
+FROM dbo.Paciente
 WHERE Documento IN
 (
     '12345678',
@@ -29,7 +29,7 @@ GO
 
 
 -- ATENCIONES
-INSERT INTO dbo.Atenciones
+INSERT INTO dbo.Atencion
 (
     IdPaciente,
     FechaAtencion,
@@ -67,6 +67,6 @@ FROM
     Facturado,
     Valor
 )
-INNER JOIN dbo.Pacientes P
+INNER JOIN dbo.Paciente P
     ON P.Documento = A.Documento;
 GO
