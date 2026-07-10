@@ -1,0 +1,72 @@
+
+@if (cargando) {
+    <div class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p class="mat-subtitle-2">Cargando atenciones...</p>
+    </div>
+}
+
+@if (!cargando) {
+    <table mat-table [dataSource]="atenciones" class="mat-elevation-z2">
+        
+        <ng-container matColumnDef="idAtencion">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let el"> {{el.idAtencion}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="documentoPaciente">
+            <th mat-header-cell *matHeaderCellDef> Documento Paciente </th>
+            <td mat-cell *matCellDef="let el"> {{el.documentoPaciente}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="codigoDiagnostico">
+            <th mat-header-cell *matHeaderCellDef> Diagnóstico (CIE-10) </th>
+            <td mat-cell *matCellDef="let el"> 
+            @if (el.codigoDiagnostico) {
+                <span class="chip-diagnostico">{{el.codigoDiagnostico}}</span>
+            } @else {
+                <span class="sin-dato">N/A</span>
+            }
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fechaAtencion">
+            <th mat-header-cell *matHeaderCellDef> Fecha Atención </th>
+            <td mat-cell *matCellDef="let el"> {{formatearFecha(el.fechaAtencion)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="requiereAuditoria">
+            <th mat-header-cell *matHeaderCellDef> Estado Auditoría </th>
+            <td mat-cell *matCellDef="let el">
+            <mat-chip-listbox>
+                <mat-chip-option [color]="el.requiereAuditoria ? 'warn' : 'primary'" [selected]="el.requiereAuditoria">
+                {{ el.requiereAuditoria ? 'REQUIERE AUDITORÍA' : 'NORMAL' }}
+                </mat-chip-option>
+            </mat-chip-listbox>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+            <td mat-cell *matCellDef="let el">
+            <button mat-icon-button color="primary" (click)="editarEvent.emit(el)" matTooltip="Editar">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="eliminarEvent.emit(el.idAtencion)" matTooltip="Eliminar">
+                <mat-icon>delete</mat-icon>
+            </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasMostradas"></tr>
+        <!-- Aquí se aplica la clase CSS condicional para la regla visual -->
+        <tr mat-row *matRowDef="let row; columns: columnasMostradas;" [ngClass]="getRowClass(row)"></tr>
+    </table>
+}
+
+@if (!cargando && atenciones.length === 0) {
+    <div class="empty-state">
+    <mat-icon class="empty-icon">inbox</mat-icon>
+    <p>No hay atenciones disponibles para auditoría.</p>
+    </div>
+}
