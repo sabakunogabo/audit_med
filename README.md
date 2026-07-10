@@ -1,126 +1,271 @@
+# AuditMed
 
-# 🏥 AuditMed
+  
 
 ![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)
+
 ![Angular](https://img.shields.io/badge/Angular-17-DD0031?logo=angular)
+
 ![SQL Server](https://img.shields.io/badge/SQL_Server-2022-CC2927?logo=microsoftsqlserver)
+
 ![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker)
+
 ![Architecture](https://img.shields.io/badge/Architecture-Clean_SOLID-00B4D8)
 
-> Sistema de auditoría médica para gestión y control de atenciones facturables. Construido con arquitectura limpia, patrón repository y despliegue portátil.
+  
 
-## 📋 Estado del Proyecto
+> Sistema de auditoría médica para gestión y control de atenciones facturables. Construido con arquitectura limpia, patrón repository, diseño desacoplado en Angular y despliegue de BD portátil con Docker.
+
+  
+
+## Estado del Proyecto
+
+  
 
 | Fase | Componente | Estado |
+
 |------|------------|--------|
+
 | 1 | Base de Datos (Docker + Flyway) | Completada |
+
 | 2 | Backend API (.NET 8 + SOLID) | Completada |
-| 3 | Frontend Angular | Pendiente |
-| 4 | Code Review | Pendiente |
 
-## Inicio Rápido
+| 3 | Frontend Angular (Material ) | Completada |
 
-> [!IMPORTANT]
-> **Requisitos:** Tener Docker y el SDK de .NET 8 instalados.
+| 4 | Code Review y Refactorización | Completada |
 
-### 1. Levantar Base de Datos (Docker)
-La base de datos se levanta en un contenedor aislado con SQL Server 2022 y las migraciones se ejecutan automáticamente con Flyway.
-
-```bash
-# Clonar repositorio
-git clone https://github.com/tu-usuario/AuditMed.git
-cd AuditMed
-
-# Levantar infraestructura de BD
-cd database
-docker compose up -d
-cd ..
-```
-
-### 2. Levantar Backend API (.NET)
-Una vez el contenedor de SQL Server esté corriendo, iniciamos la API.
-
-```bash
-cd backend/AuditMed.Api
-dotnet restore
-dotnet run
-```
-La API estará disponible en `https://localhost:5001` (o el puerto asignado).
-Puedes probar la documentación interactiva en: `https://localhost:5001/swagger`
-
-## Detener el Entorno
-
-```bash
-# Detener Backend: Ctrl + C en la terminal donde corrió dotnet
-
-# Detener Base de Datos
-cd database
-docker compose down
-```
-
-## Estructura del Proyecto
-
-```
-AuditMed/
-├── docs/                              # Documentación técnica (Obsidian)
-│   ├── base-de-datos.md
-│   └── backend-api.md
-│
-├── database/                          # Infraestructura de BD (Fase 1)
-│   ├── docker-compose.yml
-│   ├── Dockerfile.flyway
-│   └── scripts/
-│       ├── V1__creacion_tablas.sql
-│       ├── V2__datos_prueba.sql
-│       └── 03-consulta-facturacion.sql
-│
-├── backend/                           # API .NET 8 (Fase 2)
-│   └── AuditMed.Api/
-│       ├── Controllers/               # Endpoints REST
-│       ├── Data/                      # Configuración EF Core
-│       ├── Interfaces/                # Contratos (DIP)
-│       ├── Models/                    # Entidades y DTOs
-│       ├── Repositories/              # Acceso a datos (Repository Pattern)
-│       └── Services/                  # Lógica de negocio (LINQ puro)
-│
-└── frontend/                          # Interfaz de usuario (Fase 3 - Pendiente)
-```
-
-## Endpoints de la API (Fase 2)
-
-### CRUD Base
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| `GET` | `/api/atenciones/{id}` | Obtener atención por ID |
-| `POST` | `/api/atenciones` | Crear nueva atención |
-| `PUT` | `/api/atenciones/{id}` | Actualizar atención |
-| `DELETE` | `/api/atenciones/{id}` | Eliminar atención |
-
-### Lógica de Negocio (Auditoría)
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| `GET` | `/api/auditoria/atenciones` | Obtener atenciones evaluadas por reglas de auditoría |
-
-> **Reglas aplicadas en `/api/auditoria/atenciones`:**
-> 1. Filtra diagnósticos nulos o vacíos.
-> 2. Marca `RequiereAuditoria = true` si la fecha es > 30 días.
-> 3. Ordena por fecha descendente.
-
-## Arquitectura Backend
-
-El backend fue diseñado aplicando **Principios SOLID** y el **Patrón Repository** para garantizar la escalabilidad y testeabilidad del código:
-
-- **Controllers:** Exponen HTTP y delegan la lógica.
-- **Services:** Contienen reglas de negocio puras (no conocen Entity Framework). Usan LINQ en memoria.
-- **Repositories:** Abstraen el acceso a SQL Server usando EF Core.
-- **Interfaces:** Permiten inyección de dependencias y facilidad para crear Mocks en tests.
-
-## 📖 Documentación
-
-Para detalles técnicos profundos, abrir la carpeta `docs/` :
-- [[docs/base-de-datos|Base de Datos]] - Docker, Flyway y Modelo Relacional
-- [[docs/backend-api|Backend API]] - Arquitectura, SOLID y Flujo de Datos
+  
 
 ---
 
-*Proyecto desarrollado como prueba técnica.*
+  
+
+## Inicio Rápido (Levantar el sistema)
+
+  
+
+> [!IMPORTANT]
+
+> **Requisitos previos:** Tener [Docker](https://www.docker.com/) y el [SDK .NET 8](https://dotnet.microsoft.com/download) instalados.
+
+  
+
+Abre una terminal y ejecuta los siguientes comandos:
+
+  
+
+```bash
+
+# 1. Clonar el repositorio
+
+git clone https://github.com/tu-usuario/AuditMed.git
+
+cd AuditMed
+
+  
+
+# 2. Levantar Base de Datos (SQL Server en Docker + Migraciones Flyway)
+
+cd database
+
+docker compose up -d
+
+cd ..
+
+  
+
+# 3. Levantar Backend API (.NET)
+
+cd backend/AuditMed.Api
+
+dotnet run
+
+# (Dejar corriendo en una terminal)
+
+  
+
+# 4. Levantar Frontend (Angular) - En una NUEVA terminal
+
+cd frontend
+
+npm install
+
+ng serve
+
+```
+
+  
+
+**Abrir en el navegador:** `http://localhost:4200`
+
+  
+
+---
+
+  
+
+## Estructura del Proyecto (Monorepo)
+
+  
+
+```
+
+AuditMed/
+
+├── docs/ # Documentación técnica (Diseñada para Obsidian)
+
+│ ├── base-de-datos.md # Fase 1: Modelo relacional y Docker
+
+│ ├── backend-api.md # Fase 2: Arquitectura y SOLID
+
+│ ├── frontend-angular.md # Fase 3: Smart/Dumb components
+
+│ └── code-review.md # Fase 4: Análisis y patrón Strategy
+
+│
+
+├── database/ # Infraestructura como Código (Fase 1)
+
+│ ├── docker-compose.yml # Orquesta SQL Server y Flyway
+
+│ ├── Dockerfile.flyway # Imagen para migraciones
+
+│ └── scripts/ # Migraciones versionadas (V1__, V2__)
+
+│
+
+├── backend/AuditMed.Api/ # API RESTful (Fase 2)
+
+│ ├── Controllers/ # Endpoints (CRUD + Auditoría)
+
+│ ├── Interfaces/ # Contratos (Inversión de dependencias)
+
+│ ├── Repositories/ # Acceso a Datos (Entity Framework Core)
+
+│ ├── Services/ # Lógica de Negocio (LINQ puro en memoria)
+
+│ └── Models/ # Entidades y DTOs
+
+│
+
+└── frontend/ # SPA Interfaz de usuario (Fase 3)
+
+└── src/app/
+
+├── components/ # Componentes "Tontos" (Solo UI)
+
+├── services/ # Capa HTTP (HttpClient)
+
+└── app.component.ts # Componente "Inteligente" (Orquestador)
+
+```
+
+  
+
+---
+
+  
+
+## Puntos Técnicos Evaluados (Resumen de Implementación)
+
+  
+
+### Parte 1: Lógica SQL
+
+- Consulta pura con `INNER JOIN`, filtrado por estado activo y facturado (`= 0`).
+
+- Agrupación (`GROUP BY`) y ordenamiento descendente por valor total adeudado.
+
+- Desplegado de forma portable usando **Docker** y versionado con **Flyway**.
+
+  
+
+### Parte 2: Backend y Reglas de Negocio
+
+- **Patrón Repository:** Aislamiento total de `DbContext`. El servicio no conoce EF Core.
+
+- **Lógica de Auditoría en C#:** Se obtienen los datos y se procesan en memoria usando LINQ to Objects:
+
+1. Se descartan diagnósticos nulos o vacíos (`!string.IsNullOrWhiteSpace`).
+
+2. Se marca `RequiereAuditoria = true` si la fecha es menor a `DateTime.Now.AddDays(-30)`.
+
+3. Se ordena por fecha descendente.
+
+  
+
+### Parte 3: Frontend y Reglas Visuales
+
+- **Smart/Dumb Components:** El estado (`atenciones`, `cargando`) vive en `app.component`. La tabla y formulario solo reciben `@Input` y emiten `@Output`.
+
+- **Regla Visual Obligatoria:** Si `requiereAuditoria` es `true`, se inyecta la clase CSS `.fila-auditoria`, pintando toda la fila de rojo claro (`#ffebee`) para alertar al auditor.
+
+- **Reactive Forms:** Validación robusta del campo Documento (Obligatorio, min 5 caracteres).
+
+  
+
+### Parte 4: Code Review (Análisis de Código Heredado)
+
+- **Problema Identificado:** `NullReferenceException` en producción por falta de validaciones y uso de "Magic Strings" (`"Inactivo"`).
+
+- **Solución Propuesta:**
+
+- Uso de `ArgumentNullException.ThrowIfNull`.
+
+- Reemplazo de strings por `Enums`.
+
+- Implementación del **Patrón Strategy** para inyectar descuentos dinámicamente, cumpliendo el Principio Open/Closed (SOLID).
+
+  
+
+---
+
+  
+
+## Documentación Técnica (Obsidian)
+
+  
+
+La carpeta `docs/` contiene la documentación detallada de la arquitectura.
+
+Si abres la carpeta del repositorio como un **Vault en Obsidian**, podrás ver los grafos de dependencias, la traza entre BD, Backend y Frontend, y navegar mediante los siguientes enlaces:
+
+  
+
+| Fase | Documento | Descripción |
+
+|------|-----------|-------------|
+
+| 1 | [[base-de-datos\|Base de Datos]] | Diagrama Entidad-Relación, justificación de Docker/Flyway y trazabilidad hacia el Backend. |
+
+| 2 | [[backend-api\|Backend API]] | Flujo de datos, implementación del Patrón Repository y cumplimiento de principios SOLID. |
+
+| 3 | [[frontend-angular\|Frontend Angular]] | Arquitectura Smart/Dumb Components, reglas visuales CSS y trazabilidad de endpoints. |
+
+| 4 | [[code-review\|Code Review]] | Análisis de causas raíz del código heredado y refactorización con Patrón Strategy. |
+
+  
+
+---
+
+  
+
+## Detener el Entorno
+
+  
+
+```bash
+
+# Detener contenedores de BD
+
+cd database && docker compose down
+
+```
+
+  
+
+---
+
+*Prueba técnica desarrollada aplicando estándares enterprise.*
+
+```

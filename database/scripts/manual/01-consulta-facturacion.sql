@@ -83,11 +83,6 @@ GO
 -- CONSULTAS AUXILIARES PARA VERIFICACIÓN
 -- =============================================================================
 
-PRINT '';
-PRINT '========================================';
-PRINT '  VERIFICACIONES';
-PRINT '========================================';
-PRINT '';
 
 -- Verificación 1: Pacientes excluidos por estado
 PRINT '1. Pacientes EXCLUIDOS (no están activos):';
@@ -105,9 +100,7 @@ WHERE
     AND a.Facturado = 0
 GROUP BY 
     p.Documento, p.Nombre, p.EstadoAfiliacion;
-PRINT '';
-
--- Verificación 2: Atenciones excluidas por estar facturadas
+    
 PRINT '2. Atenciones EXCLUIDAS (ya facturadas):';
 SELECT 
     p.Documento,
@@ -137,8 +130,8 @@ SELECT
     a.Facturado,
     a.Valor,
     CASE 
-        WHEN a.Facturado = 1 THEN '❌ Excluida (facturada)'
-        ELSE '✅ Incluida'
+        WHEN a.Facturado = 1 THEN 'Excluida (facturada)'
+        ELSE 'Incluida'
     END AS EstadoConsulta
 FROM 
     dbo.Pacientes p

@@ -26,9 +26,16 @@ namespace AuditMed.Api.Repositories.AtencionRepository
         }
         public async Task<RegistroAtencion?> UpdateAsync(RegistroAtencion entity)
         {
-            _context.RegistroAtencion.Attach(entity);
-            _context.Entry(entity).State = EntityState.Modified;
+            var localEntity = _context.Set<RegistroAtencion>()
+                .Local
+                .FirstOrDefault(x => x.IdAtencion == entity.IdAtencion);
+            if (localEntity != null)
+            {
+                _context.Entry(localEntity).State = EntityState.Detached;
+            }
+            _context.Set<RegistroAtencion>().Update(entity);
             await _context.SaveChangesAsync();
+            _context.Entry(entity).State = EntityState.Detached;
             return entity;
         }
         public async Task<bool> DeleteAsync(int id)
