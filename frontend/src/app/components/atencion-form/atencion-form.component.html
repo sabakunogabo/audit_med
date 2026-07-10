@@ -1,0 +1,50 @@
+
+<form [formGroup]="formulario" (ngSubmit)="onSubmit()" class="form-container">
+  <h3>{{ modoEdicion ? 'Editar Atención' : 'Registrar Nueva Atención' }}</h3>
+
+  <div class="form-grid">
+    <!-- Documento Paciente -->
+    <mat-form-field appearance="outline">
+      <mat-label>Documento del Paciente *</mat-label>
+      <input matInput formControlName="documentoPaciente" placeholder="Ej: 12345678">
+      @if (f['documentoPaciente'].hasError('required') && f['documentoPaciente'].touched) {
+        <mat-error>El documento es obligatorio.</mat-error>
+      }
+      @if (f['documentoPaciente'].hasError('minlength')) {
+        <mat-error>Mínimo 5 caracteres.</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Código Diagnóstico -->
+    <mat-form-field appearance="outline">
+      <mat-label>Código Diagnóstico (CIE-10)</mat-label>
+      <input matInput formControlName="codigoDiagnostico" placeholder="Ej: J01.1">
+    </mat-form-field>
+
+    <!-- Fecha Atención -->
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de Atención *</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="fechaAtencion">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      @if (f['fechaAtencion'].hasError('required') && f['fechaAtencion'].touched) {
+        <mat-error>La fecha es obligatoria.</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Checkbox Auditoría -->
+    <div class="checkbox-wrapper">
+      <mat-checkbox formControlName="requiereAuditoria" color="warn">
+        Marcar manualmente como requiere auditoría
+      </mat-checkbox>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button mat-stroked-button type="button" (click)="cancelar()">Cancelar</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="formulario.invalid">
+      <mat-icon>save</mat-icon>
+      {{ modoEdicion ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
+</form>
