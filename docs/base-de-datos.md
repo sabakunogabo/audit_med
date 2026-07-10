@@ -62,9 +62,12 @@ erDiagram
 
 | Archivo | Descripción |
 |---------|-------------|
-| `V1__creacion_tablas.sql` | Crea estructura (Pacientes, Atenciones, RegistroAtenciones) e índices |
-| `V2__datos_prueba.sql` | Inserta datos de prueba para validar la lógica |
-| `03-consulta-facturacion.sql` | *No es migración*. Consulta `SELECT` para validación manual del evaluador |
+| `V1__creacion_base_datos.sql` | Crea la base de datos `AuditMed` si no existe. |
+| `V2__creacion_tablas.sql` | Crea las tablas `Paciente`, `Atencion` y `RegistroAtencion` con sus restricciones e índices. |
+| `V3__seed_pacientes.sql` | Inserta 8 pacientes de prueba (incluye activos, inactivos y suspendidos). |
+| `V4__seed_atenciones.sql` | Inserta 16 atenciones de prueba (algunas facturadas y otras no). |
+| `V5__seed_registro_atenciones.sql` | Inserta 9 registros de atención con fechas relativas a hoy (para validar auditoria de >30 días). |
+| `03-consulta-facturacion.sql` | *No es migración*. Consulta `SELECT` para validación manual del |
 
 ## Volver a
 - [[README|Inicio]]
